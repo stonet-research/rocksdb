@@ -424,6 +424,8 @@ ifndef DISABLE_JEMALLOC
 	PLATFORM_CCFLAGS += $(JEMALLOC_INCLUDE)
 endif
 
+JAVA_LDFLAGS += -lzbd
+
 ifndef USE_FOLLY
 	USE_FOLLY=0
 endif
@@ -2210,7 +2212,7 @@ rocksdbjavastatic_javalib:
 	rm -f java/target/$(ROCKSDBJNILIB)
 	$(CXX) $(CXXFLAGS) -I./java/. $(JAVA_INCLUDE) -shared -fPIC \
 	  -o ./java/target/$(ROCKSDBJNILIB) $(ALL_JNI_NATIVE_SOURCES) \
-	  $(LIB_OBJECTS) $(COVERAGEFLAGS) \
+	  $(LIB_OBJECTS) $(COVERAGEFLAGS) -l lzbd \
 	  $(JAVA_COMPRESSIONS) $(JAVA_STATIC_LDFLAGS)
 	cd java/target;if [ "$(DEBUG_LEVEL)" == "0" ]; then \
 		strip $(STRIPFLAGS) $(ROCKSDBJNILIB); \

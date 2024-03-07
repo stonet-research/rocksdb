@@ -1283,7 +1283,7 @@ DEFINE_bool(simulate_hdd, false, "Simulate read/write latency on HDD.");
 
 static std::shared_ptr<ROCKSDB_NAMESPACE::Env> env_guard;
 
-static ROCKSDB_NAMESPACE::Env* FLAGS_env = ROCKSDB_NAMESPACE::Env::Default();
+static ROCKSDB_NAMESPACE::Env* FLAGS_env = ROCKSDB_NAMESPACE::Env::Default2();
 
 DEFINE_int64(stats_interval, 0, "Stats are reported every N operations when "
              "this is greater than zero. When 0 the interval grows over time.");

@@ -62,6 +62,7 @@
 #include "rocksdb/env.h"
 #include "rocksdb/options.h"
 #include "rocksdb/slice.h"
+#include "rocksdb/convenience.h"
 #include "rocksdb/system_clock.h"
 #include "test_util/sync_point.h"
 #include "util/coding.h"
@@ -470,6 +471,32 @@ void PosixEnv::WaitForJoin() {
 
 }  // namespace
 
+struct MyRocksContext {
+   std::string uri;
+   Options options;
+   DB *db;
+   ConfigOptions config_options;
+};
+   
+static std::shared_ptr<Env> env_guard_test;
+
+Env* Env::Default2() {
+    struct MyRocksContext *context = new MyRocksContext[1];
+    context->config_options.env = ROCKSDB_NAMESPACE::Env::Default();
+    context->db = nullptr;
+    context->options.create_if_missing = true;
+    context->uri = "zenfs://dev:nvme5n1";
+    Env::CreateFromUri(
+		    context->config_options, 
+		    "",
+		    context->uri,
+		    &(context->options.env),
+		    &env_guard_test
+    );
+    fprintf(stderr, "Arrived \n");
+    return context->options.env;
+}
+
 //
 // Default Posix Env
 //
@@ -490,8 +517,14 @@ Env* Env::Default() {
   // ~PosixEnv must be called on exit
   //**TODO: Can we make this a STATIC_AVOID_DESTRUCTION?
   static PosixEnv default_env;
+  static bool once = false;
+  if (!once) {
+	  once = true;
+  }
   return &default_env;
 }
+
+
 
 //
 // Default Posix SystemClock

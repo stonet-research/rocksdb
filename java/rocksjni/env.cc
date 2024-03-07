@@ -19,14 +19,15 @@
 #include "portal.h"
 #include "rocksjni/cplusplus_to_java_convert.h"
 
+
 /*
- * Class:     org_rocksdb_Env
- * Method:    getDefaultEnvInternal
- * Signature: ()J
- */
+ *  * Class:     org_rocksdb_Env
+ *   * Method:    getDefaultEnvInternal
+ *    * Signature: ()J
+ *     */
 jlong Java_org_rocksdb_Env_getDefaultEnvInternal(
-    JNIEnv*, jclass) {
-  return GET_CPLUSPLUS_POINTER(ROCKSDB_NAMESPACE::Env::Default());
+		    JNIEnv*, jclass) {
+	  return GET_CPLUSPLUS_POINTER(ROCKSDB_NAMESPACE::Env::Default2());
 }
 
 /*
